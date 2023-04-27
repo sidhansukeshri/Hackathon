@@ -2,10 +2,10 @@ import mysql.connector
 
 class Database:
     def __init__(self, host, user, password, database):
-        self.host = "localhost"
-        self.user = "root"
-        self.password = "Spysiddhu@#2004"
-        self.database = "scrap"
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
         self.connect()
 
     def connect(self):
@@ -20,6 +20,10 @@ class Database:
     def execute_query(self, sql_query, query_params):
         self.cursor.execute(sql_query, query_params)
         return self.cursor.fetchall()
+
+class Customer:
+    def __init__(self, db):
+        self.db = db
 
     def search_customers(self):
         # Prompt the user for input
@@ -53,7 +57,7 @@ what is your choice : """)
         query_params = (search_value,)
 
         # Execute the query with the parameter(s)
-        results = self.execute_query(sql_query, query_params)
+        results = self.db.execute_query(sql_query, query_params)
 
         # Print the results
         if len(results) > 0:
@@ -62,6 +66,9 @@ what is your choice : """)
         else:
             print("No results found.")
 
-# Create an instance of the Database class and search for customers
+# Create an instance of the Database class
 db = Database("localhost", "root", "Spysiddhu@#2004", "scrap")
-db.search_customers()
+
+# Create an instance of the Customer class and search for customers
+customer = Customer(db)
+customer.search_customers()
